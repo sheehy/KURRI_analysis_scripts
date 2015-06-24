@@ -182,7 +182,7 @@ def select_filenames(directory, indices_select, channel_id):
     return ch_files_list
 
 
-def signal_loss_time(tdat,data, method, cut_off_freq = 0.5e6, threshold_volts = 0.05, sigtonoise = 10):
+def signal_loss_time(tdat,data, method, cut_off_freq = 0.5e6, threshold_volts = 0.05, sigtonoise = 4):
     """Find time of last signal.  
     The low frequency component is first removed using a high pass filter (below cut_off_freq).
     
