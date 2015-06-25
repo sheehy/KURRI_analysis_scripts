@@ -18,14 +18,14 @@ from pylab import *
 #dirname ="../data/SortByDate/2014/3/24/dmag/"	 
 #dirname ="../data/SortByDate/2014/3/25/D0_1012_D1_140_F7/" 
 #dirname = "../data/SortByDate/2014/3/27/Corr_700A/"
-dirname = "/Users/Suzie/Physics/KURRIFFAG/DATA/2015/2015_06_24/COD_accel/"
+dirname = "/Users/Suzie/Physics/KURRIFFAG/DATA/2015/2015_06_24/COD_accel/900A/"
 #dirname = "../data/SortByDate/2014/3/31/QinBin/F7/"
 
 #
 indices_select = [] #select particular indices from each channel, empty list means process all files
 #channel_id = ["CH1","CH2","CH3"] #string to identify each channel
 #channel_id = ["F1","F5","F7"] #identifier for channels to be analysed
-channel_id = ["F01"]
+channel_id = ["F05"]
 
 #select channel files
 ch_files_sel = adata.select_filenames(dirname, indices_select, channel_id)
@@ -39,6 +39,8 @@ nstd = 10 #set threshold above noise to determine final loss point
 method = 'noise' #choose "fixed" or "noise"
 
 #calculate loss time
+#trigger_offset = -0.00203983999
+trigger_offset=-0.00203983999+0.000919839994
 loss_time_all = []
 for chf in ch_files_sel:	
 	loss_time_ch  =[]
@@ -48,9 +50,9 @@ for chf in ch_files_sel:
 			tdat_chf, data_chf = adata.read_scope(dirname, chf1)
 			loss_time = adata.signal_loss_time(tdat_chf, data_chf, method)
 			loss_time_ch.append(loss_time)
-			plot(tdat_chf, data_chf, 'r-')
-			axvline(loss_time[0],color='k',ls='dashed')
-			show()
+			#plot(tdat_chf, data_chf, 'r-')
+			#axvline(loss_time[0],color='k',ls='dashed')
+			#show()
 	loss_time_all.append(loss_time_ch)
 
 print "loss time all ",loss_time_all, "len ",len(loss_time_all)
@@ -59,6 +61,10 @@ print "loss time all ",loss_time_all, "len ",len(loss_time_all)
 #-------------------------Rest specific to file format used at particular time-----------------
 #31/3/14 - map each index to probe position			
 F01_pos = np.arange(340, 700, 20)
+F02_pos = np.arange(360,880, 20)
+F03_pos = np.arange(320, 800, 20)
+F05_pos = np.arange(360, 920, 20)
+F12_pos = np.arange(300, 820, 20)
 #F5_pos = [890, 870, 850, 830, 800, 750, 700, 650, 600, 550, 500, 450, 425, 400, 380, 360, 340]
 #F1_pos = [870, 850, 800, 750, 700, 650, 600, 550, 500, 450, 425, 400, 380, 360, 340]
 #F7_pos = [870, 850, 800, 750, 700, 650, 600, 550, 500, 450, 425, 400, 380, 360, 340, 320, 300]
@@ -66,21 +72,24 @@ F01_pos = np.arange(340, 700, 20)
 
 loss_time_flatten = np.array(loss_time_all[0])
 
-fout='QinBin_F01.txt'
-fpos = list(F01_pos)
-
-if "F01" in dirname:
+if "F01" in channel_id:
 	fout = 'QinBin_F01.txt'
 	fpos = list(F01_pos)
-elif "F5" in dirname:
-	fout = 'QinBin_F5.txt'
-	fpos = list(F5_pos)
-elif "F7" in dirname:
-	fout = 'QinBin_F7.txt'
-	fpos = list(F7_pos)
+elif "F02" in channel_id:
+	fout = 'QinBin_F02.txt'
+	fpos = list(F02_pos)
+elif "F03" in channel_id:
+	fout = 'QinBin_F03.txt'
+	fpos = list(F03_pos)
+elif "F05" in channel_id:
+	fout = 'QinBin_F05.txt'
+	fpos = list(F05_pos)
+elif "F12" in channel_id:
+	fout = 'QinBin_F12.txt'
+	fpos = list(F12_pos)
 	
 ff = open(fout,"w")
 print >>ff, "probe position (mm) loss time (us)"
 for pos, losst in zip(fpos, loss_time_flatten): 
-	print >>ff, pos, 1e6*losst[0]
+	print >>ff, pos, 1e6*(losst[0]-trigger_offset)
 ff.close()

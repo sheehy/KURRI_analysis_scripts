@@ -1,0 +1,119 @@
+'**********          **********
+'    tmp_all.equ
+'
+'
+'    by Python script
+'    Shinji Machida
+'**********          **********
+
+clock = 40000000 ' = 40 M
+
+Tini = 0.1e-3
+Tfin = 0.1e-3
+
+'***** Initial blank pattern *****
+size = Tini*clock
+"tmp_ini.wfm"=0.
+
+'***** Final blank pattern *****
+size = Tfin*clock
+"tmp_fin.wfm"=0.
+
+'***** Coefficients An for phase and Dn for voltage *****
+Tacc1 = 0.00025
+dT = 0.1e-3
+size = (Tacc1+dT)*clock
+A0 = 1582831.0
+A1 = 49958335.6863
+A2 = 22023879312.4
+A3 = -1.43728097365e+12
+A4 = 2.81077711925e+15
+A5 = -2.95555870119e+18
+D0 = 0.9904433
+D1 = -47.1897163356
+D2 = -25512.627438
+D3 = 7303938.54639
+D4 = 2524369332.42
+D5 = -1.7639014911e+12
+phoff = 0.0
+pjump = 0.0/360.
+"tmp_acc1.wfm"=sin(2*3.14159265359*(A0*(time-dT)+A1*(time-dT)^1+A2*(time-dT)^2+A3*(time-dT)^3+A4*(time-dT)^4+A5*(time-dT)^5+phoff+pjump))*(D0+D1*(time-dT)^1+D2*(time-dT)^2+D3*(time-dT)^3+D4*(time-dT)^4+D5*(time-dT)^5)
+
+'***** Coefficients An for phase and Dn for voltage *****
+Tacc2 = 0.01475
+dT = 0.
+size = (Tacc2+dT)*clock
+A0 = 1611860.0
+A1 = 66210549.8252
+A2 = -291163387.721
+A3 = 4935689024.31
+A4 = -230745829102.0
+A5 = 3.37302193296e+12
+D0 = 0.9771855
+D1 = -58.1500796626
+D2 = 9100.73161279
+D3 = -737516.449262
+D4 = 32552893.5248
+D5 = -603584605.664
+phoff = 399.171399615
+pjump = 0.0/360.
+"tmp_acc2.wfm"=sin(2*3.14159265359*(A0*(time-dT)+A1*(time-dT)^1+A2*(time-dT)^2+A3*(time-dT)^3+A4*(time-dT)^4+A5*(time-dT)^5+phoff+pjump))*(D0+D1*(time-dT)^1+D2*(time-dT)^2+D3*(time-dT)^3+D4*(time-dT)^4+D5*(time-dT)^5)
+
+'***** Coefficients An for phase and Dn for voltage *****
+Tacc3 = 0.001
+dT = 0.
+size = (Tacc3+dT)*clock
+A0 = 3398018.0
+A1 = 54771335.1569
+A2 = -17589002990.8
+A3 = -511490030003.0
+A4 = 1.18259832133e+14
+A5 = -6.0456105392e+15
+D0 = 0.8523492
+D1 = 4.45804264419
+D2 = -2201.96469132
+D3 = -79781.7611425
+D4 = 77937274.1046
+D5 = -24965180889.3
+phoff = 37717.2059195
+pjump = 0.0/360.
+"tmp_acc3.wfm"=sin(2*3.14159265359*(A0*(time-dT)+A1*(time-dT)^1+A2*(time-dT)^2+A3*(time-dT)^3+A4*(time-dT)^4+A5*(time-dT)^5+phoff+pjump))*(D0+D1*(time-dT)^1+D2*(time-dT)^2+D3*(time-dT)^3+D4*(time-dT)^4+D5*(time-dT)^5)
+
+'***** Coefficients An for phase and Dn for voltage *****
+Tacc4 = 0.005
+dT = 0.
+size = (Tacc4+dT)*clock
+A0 = 3453265.0
+A1 = 0.0
+A2 = 0.0
+A3 = 0.0
+A4 = 0.0
+A5 = 0.0
+D0 = 0.854577
+D1 = 0.0
+D2 = 0.0
+D3 = 0.0
+D4 = 0.0
+D5 = 0.0
+phoff = 41152.0130215
+pjump = 0.0/360.
+"tmp_acc4.wfm"=sin(2*3.14159265359*(A0*(time-dT)+A1*(time-dT)^1+A2*(time-dT)^2+A3*(time-dT)^3+A4*(time-dT)^4+A5*(time-dT)^5+phoff+pjump))*(D0+D1*(time-dT)^1+D2*(time-dT)^2+D3*(time-dT)^3+D4*(time-dT)^4+D5*(time-dT)^5)
+
+'***** Concatinate temp file *****
+"tmp1.wfm"=join("tmp_ini.wfm","tmp_acc1.wfm")
+"tmp2.wfm"=join("tmp1.wfm","tmp_acc2.wfm")
+"tmp3.wfm"=join("tmp2.wfm","tmp_acc3.wfm")
+"tmp4.wfm"=join("tmp3.wfm","tmp_acc4.wfm")
+"tmp_all.wfm"=join("tmp4.wfm","tmp_fin.wfm")
+
+'***** Delete temp file *****
+delete("tmp_ini.wfm")
+delete("tmp_fin.wfm")
+delete("tmp_acc1.wfm")
+delete("tmp1.wfm")
+delete("tmp_acc2.wfm")
+delete("tmp2.wfm")
+delete("tmp_acc3.wfm")
+delete("tmp3.wfm")
+delete("tmp_acc4.wfm")
+delete("tmp4.wfm")

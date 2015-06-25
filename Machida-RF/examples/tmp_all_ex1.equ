@@ -1,0 +1,96 @@
+'**********          **********
+'    tmp_all.equ
+'
+'
+'    by Python script
+'    Shinji Machida
+'**********          **********
+
+clock = 40000000 ' = 40 M
+
+Tini = 0.1e-3
+Tfin = 0.1e-3
+
+'***** Initial blank pattern *****
+size = Tini*clock
+"tmp_ini.wfm"=0.
+
+'***** Final blank pattern *****
+size = Tfin*clock
+"tmp_fin.wfm"=0.
+
+'***** Coefficients An for phase and Dn for voltage *****
+Tacc1 = 0.006
+dT = 0.1e-3
+size = (Tacc1+dT)*clock
+A0 = 1582831.0
+A1 = 66672288.533
+A2 = -677137533.757
+A3 = 16990169712.5
+A4 = -814417067028.0
+A5 = 2.41464762606e+13
+D0 = 0.9904433
+D1 = -62.9353465969
+D2 = 10531.2469949
+D3 = -1035649.65663
+D4 = 64760335.52
+D5 = -2019739147.43
+phoff = 0.0
+pjump = 0.0/360.
+"tmp_acc1.wfm"=sin(2*3.14159265359*(A0*(time-dT)+A1*(time-dT)^1+A2*(time-dT)^2+A3*(time-dT)^3+A4*(time-dT)^4+A5*(time-dT)^5+phoff+pjump))*(D0+D1*(time-dT)^1+D2*(time-dT)^2+D3*(time-dT)^3+D4*(time-dT)^4+D5*(time-dT)^5)
+
+'***** Coefficients An for phase and Dn for voltage *****
+Tacc2 = 0.001
+dT = 0.
+size = (Tacc2+dT)*clock
+A0 = 2320283.0
+A1 = 56885366.6643
+A2 = -18623811103.2
+A3 = -264003442239.0
+A4 = 7.03350887996e+13
+A5 = -7.07732676218e+15
+D0 = 0.836486
+D1 = -5.51141270606
+D2 = 4214.85454848
+D3 = -1554378.60105
+D4 = 490701045.088
+D5 = -44191860760.4
+phoff = 11766.6130327
+pjump = 0.0/360.
+"tmp_acc2.wfm"=sin(2*3.14159265359*(A0*(time-dT)+A1*(time-dT)^1+A2*(time-dT)^2+A3*(time-dT)^3+A4*(time-dT)^4+A5*(time-dT)^5+phoff+pjump))*(D0+D1*(time-dT)^1+D2*(time-dT)^2+D3*(time-dT)^3+D4*(time-dT)^4+D5*(time-dT)^5)
+
+'***** Coefficients An for phase and Dn for voltage *****
+Tacc3 = 0.005
+dT = 0.
+size = (Tacc3+dT)*clock
+A0 = 2377439.0
+A1 = 0.0
+A2 = 0.0
+A3 = 0.0
+A4 = 0.0
+A5 = 0.0
+D0 = 0.8340815
+D1 = 0.0
+D2 = 0.0
+D3 = 0.0
+D4 = 0.0
+D5 = 0.0
+phoff = 14124.9639199
+pjump = 0.0/360.
+"tmp_acc3.wfm"=sin(2*3.14159265359*(A0*(time-dT)+A1*(time-dT)^1+A2*(time-dT)^2+A3*(time-dT)^3+A4*(time-dT)^4+A5*(time-dT)^5+phoff+pjump))*(D0+D1*(time-dT)^1+D2*(time-dT)^2+D3*(time-dT)^3+D4*(time-dT)^4+D5*(time-dT)^5)
+
+'***** Concatinate temp file *****
+"tmp1.wfm"=join("tmp_ini.wfm","tmp_acc1.wfm")
+"tmp2.wfm"=join("tmp1.wfm","tmp_acc2.wfm")
+"tmp3.wfm"=join("tmp2.wfm","tmp_acc3.wfm")
+"tmp_all.wfm"=join("tmp3.wfm","tmp_fin.wfm")
+
+'***** Delete temp file *****
+delete("tmp_ini.wfm")
+delete("tmp_fin.wfm")
+delete("tmp_acc1.wfm")
+delete("tmp1.wfm")
+delete("tmp_acc2.wfm")
+delete("tmp2.wfm")
+delete("tmp_acc3.wfm")
+delete("tmp3.wfm")
