@@ -1,0 +1,50 @@
+'**********          **********
+'    tmp_all.equ
+'
+'
+'    by Python script
+'    Shinji Machida
+'**********          **********
+
+clock = 40000000 ' = 40 M
+
+Tini = 0.1e-3
+Tfin = 0.1e-3
+
+'***** Initial blank pattern *****
+size = Tini*clock
+"tmp_ini.wfm"=0.
+
+'***** Final blank pattern *****
+size = Tfin*clock
+"tmp_fin.wfm"=0.
+
+'***** Coefficients An for phase and Dn for voltage *****
+Tacc1 = 0.020532
+dT = 0.1e-3
+size = (Tacc1+dT)*clock
+A0 = 1582831.0
+A1 = 97253925.6156
+A2 = -1332577538.54
+A3 = 27044051873.5
+A4 = -683591802546.0
+A5 = 8.77687714976e+12
+D0 = 0.9904433
+D1 = -82.4952532799
+D2 = 15367.5679238
+D3 = -1319978.58093
+D4 = 56045944.63
+D5 = -961312927.14
+phoff = 0.0
+pjump = 0.0/360.
+"tmp_acc1.wfm"=sin(2*3.14159265359*(A0*(time-dT)+A1*(time-dT)^2+A2*(time-dT)^3+A3*(time-dT)^4+A4*(time-dT)^5+A5*(time-dT)^6+phoff+pjump))*(D0+D1*(time-dT)^1+D2*(time-dT)^2+D3*(time-dT)^3+D4*(time-dT)^4+D5*(time-dT)^5)
+
+'***** Concatinate temp file *****
+"tmp1.wfm"=join("tmp_ini.wfm","tmp_acc1.wfm")
+"tmp_all.wfm"=join("tmp1.wfm","tmp_fin.wfm")
+
+'***** Delete temp file *****
+delete("tmp_ini.wfm")
+delete("tmp_fin.wfm")
+delete("tmp_acc1.wfm")
+delete("tmp1.wfm")
