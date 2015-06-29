@@ -25,7 +25,7 @@ dirname = "/Users/Suzie/Physics/KURRIFFAG/DATA/2015/2015_06_24/COD_accel/900A/"
 indices_select = [] #select particular indices from each channel, empty list means process all files
 #channel_id = ["CH1","CH2","CH3"] #string to identify each channel
 #channel_id = ["F1","F5","F7"] #identifier for channels to be analysed
-channel_id = ["F05"]
+channel_id = ["F12"]
 
 #select channel files
 ch_files_sel = adata.select_filenames(dirname, indices_select, channel_id)
@@ -39,8 +39,9 @@ nstd = 10 #set threshold above noise to determine final loss point
 method = 'noise' #choose "fixed" or "noise"
 
 #calculate loss time
+trigger_offset = 0
 #trigger_offset = -0.00203983999
-trigger_offset=-0.00203983999+0.000919839994
+#trigger_offset=-0.00203983999+0.000919839994
 loss_time_all = []
 for chf in ch_files_sel:	
 	loss_time_ch  =[]
@@ -60,11 +61,11 @@ print "loss time all ",loss_time_all, "len ",len(loss_time_all)
 
 #-------------------------Rest specific to file format used at particular time-----------------
 #31/3/14 - map each index to probe position			
-F01_pos = np.arange(340, 700, 20)
-F02_pos = np.arange(360,880, 20)
+F01_pos = np.arange(340, 840, 20)
+F02_pos = np.arange(360,920, 20)
 F03_pos = np.arange(320, 800, 20)
 F05_pos = np.arange(360, 920, 20)
-F12_pos = np.arange(300, 820, 20)
+F12_pos = np.arange(320, 800, 20)
 #F5_pos = [890, 870, 850, 830, 800, 750, 700, 650, 600, 550, 500, 450, 425, 400, 380, 360, 340]
 #F1_pos = [870, 850, 800, 750, 700, 650, 600, 550, 500, 450, 425, 400, 380, 360, 340]
 #F7_pos = [870, 850, 800, 750, 700, 650, 600, 550, 500, 450, 425, 400, 380, 360, 340, 320, 300]

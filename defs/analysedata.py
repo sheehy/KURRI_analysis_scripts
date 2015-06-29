@@ -228,13 +228,16 @@ def readset(dirname, setname):
     return dat
         
 
-def plotset(dirname, setname):
-    '''Plot a set of data where a 'set' is from a number of different probes'''
+#Plot a set of data where a 'set' is from a number of different probes
+def plotset(dirname, setname, colors=['b', 'g', 'r', 'c', 'm'], linestyle ='.-'):
+    for i in range(len(setname)):
+        ffile = dirname+setname[i]
+        dat = np.loadtxt(ffile, skiprows=1, usecols=(0,1), unpack=True)
+    
+        print dat[0]
+        print dat[1]
 
-    dataset = readset(dirname, setname)
-    for i in range(len(dat)):
-        dat=dataset[i]
-        plot(dat[0], dat[1], '.-',label=setname[i])
+        plot(dat[0], dat[1], color=colors[i], linestyle=linestyle, label=setname[i])
 
 
 def findRfromt(rvals, tvals, order=5):
