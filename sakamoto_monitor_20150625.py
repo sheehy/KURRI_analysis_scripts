@@ -13,8 +13,8 @@ def find_nearest(array,value):
     
 fdirect="/Users/Suzie/Physics/KURRIFFAG/DATA/2015/2015_06_25/"
 
-fname1 = "sakamoto_mon_23.csv"
-fname2= "sakamoto_mon_38.csv"
+fname2 = "sakamoto_mon_23.csv"
+fname1= "sakamoto_mon_38.csv"
 bunchmonf="sakamoto_mon_ref.csv"
 
 #get raw signals from file
@@ -32,7 +32,7 @@ plot(tdat[starti:endi], abs(numpy.array(data1[starti:endi])), 'b-')
 plot(tdat2[starti:endi], abs(numpy.array(data2[starti:endi])), 'g-')
 show()
 
-filter=True
+filter=False
 if filter==True:
 	#parameters for filter
 	cut_off_freq = 0.5e6
